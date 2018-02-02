@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import News from "./News";
 import config from "../config/beta/config.beta.json";
+import styled from "styled-components";
 
 class NewsList extends Component {
   constructor(props) {
@@ -47,11 +48,35 @@ class NewsList extends Component {
     return this.state.newsList.map(news => <News key={news._id} news={news} />);
   }
   render() {
+    const NewsList = styled.div`
+      float: left;
+      width: 100%;
+      list-style-type: none;
+      padding: 0px;
+      margin: 0px 0px 20px 0;
+    `;
+    const ShowMoreButton = styled.button`
+      width: 50%;
+      display: block;
+      background: #1e88e5;
+      cursor: pointer;
+      padding: 5px 10px;
+      margin: 20px auto 20px auto;
+      border: 0;
+      color: #fff;
+      font-size: 1.5rem;
+      box-shadow: none;
+      &: hover {
+        background: #005cb2;
+      }
+    `;
     return (
       <div>
-        {this.state.newsList.length > 0 && <ul>{this.getNewList()}</ul>}
         {this.state.newsList.length > 0 && (
-          <button onClick={this.showMore}>Show more</button>
+          <NewsList>{this.getNewList()}</NewsList>
+        )}
+        {this.state.newsList.length > 0 && (
+          <ShowMoreButton onClick={this.showMore}>Show more</ShowMoreButton>
         )}
       </div>
     );

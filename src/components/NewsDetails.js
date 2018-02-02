@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Modal from "react-responsive-modal";
 import config from "../config/beta/config.beta.json";
+import styled from "styled-components";
 
 class NewsDetails extends Component {
   constructor(props) {
@@ -34,15 +35,48 @@ class NewsDetails extends Component {
     }
   }
   render() {
+    const Title = styled.h1`
+      font-size: 1.5rem;
+      font-weight: 300;
+      color: #333;
+      margin: 30px 0 10px 0;
+      text-align: center;
+    `;
+    const PublishInfo = styled.p`
+      float: right;
+      margin: 10px 0 0 0;
+    `;
+    const PublishDate = styled.small`
+      float: left;
+      margin-left: 20px;
+      margin-top: 2px;
+      color: #666;
+    `;
+    const Source = styled.small`
+      float: left;
+      color: #005cb2;
+      font-size: 1rem;
+    `;
+    const NewsImage = styled.img`
+      max-width: 100%;
+    `;
+    const NewsImageWrapper = styled.div`
+      float: left;
+      width: 100%;
+      margin: 20px auto;
+      text-align: center;
+    `;
     const { news, open } = this.state;
     return (
       <Modal open={open} onClose={this.onCloseModal} little>
-        <img src={this.getThumbnail(news)} alt={news.document_type} />
-        <h2>{news.snippet}</h2>
-        <p>
-          <small>{this.getPublishDate(news)}</small>
-          <small> {news.source}</small>
-        </p>
+        <Title>{news.snippet}</Title>
+        <PublishInfo>
+          <Source> {news.source}</Source>
+          <PublishDate>{this.getPublishDate(news)}</PublishDate>
+        </PublishInfo>
+        <NewsImageWrapper>
+          <NewsImage src={this.getThumbnail(news)} alt={news.document_type} />
+        </NewsImageWrapper>
       </Modal>
     );
   }
