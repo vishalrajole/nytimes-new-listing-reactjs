@@ -41,7 +41,7 @@ class News extends Component {
       background: red;
     `;
     return (
-      <Wrapper onClick={this.openModal}>
+      <li onClick={this.openModal}>
         <h1>{news.snippet}</h1>
         <img src={this.getThumbnail(news)} alt={news.document_type} />
         <p>
@@ -49,7 +49,7 @@ class News extends Component {
           <small> {news.source}</small>
         </p>
         <NewsDetails open={open} news={news} />
-      </Wrapper>
+      </li>
     );
   }
 }
