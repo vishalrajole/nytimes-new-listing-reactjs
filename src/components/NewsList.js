@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import News from "./News";
 import config from "../config/beta/config.beta.json";
 import styled from "styled-components";
-
+import logo from "../assets/logo.png";
 class NewsList extends Component {
   constructor(props) {
     super(props);
@@ -24,7 +24,7 @@ class NewsList extends Component {
         config.apiKey
       }&page=${
         this.state.pageCount
-      }&fl=source,multimedia,pub_date,_id,snippet,keywords&sort=newest`
+      }&fl=source,multimedia,pub_date,_id,snippet,keywords,web_url&sort=newest`
     )
       .then(response => response.json())
       .catch(error => console.log("inside error: ", error))
@@ -70,8 +70,22 @@ class NewsList extends Component {
         background: #005cb2;
       }
     `;
+    const LogoBranding = styled.h2`
+      text-align: center;
+    `;
+    const Logo = styled.img`
+      width: 379px;
+      height: 64px;
+    `;
+
     return (
       <div>
+        <LogoBranding>
+          <a href="https://www.nytimes.com/">
+            <Logo src={logo} alt="The New York Times" />
+          </a>
+        </LogoBranding>
+
         {this.state.newsList.length > 0 && (
           <NewsList>{this.getNewList()}</NewsList>
         )}

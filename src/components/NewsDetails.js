@@ -12,6 +12,7 @@ class NewsDetails extends Component {
     };
     this.onCloseModal = this.onCloseModal.bind(this);
     this.getPublishDate = this.getPublishDate.bind(this);
+    this.getKeywords = this.getKeywords.bind(this);
   }
   componentWillReceiveProps({ open }) {
     this.setState({ open });
@@ -23,16 +24,29 @@ class NewsDetails extends Component {
     const dateTimeStamp = news.pub_date && new Date(news.pub_date);
     return dateTimeStamp && dateTimeStamp.toLocaleString();
   }
-  getThumbnail(news) {
-    const newsWithMedia = news.multimedia.filter(media => {
-      return media.subtype === "thumbnail";
+  getLargerImage(news) {
+    const newsWithLargerImage = news.multimedia.filter(media => {
+      return media.subtype === "articleInline";
     });
-    if (newsWithMedia.length && newsWithMedia[0].url) {
-      const url = `${config.assetServer}/${newsWithMedia[0].url}?api-key=${
-        config.apiKey
-      }`;
+    if (newsWithLargerImage.length && newsWithLargerImage[0].url) {
+      const url = `${config.assetServer}/${
+        newsWithLargerImage[0].url
+      }?api-key=${config.apiKey}`;
       return url;
     }
+  }
+  getKeywords(news) {
+    const Bullet = styled.span`
+      display: inline-block;
+      margin-right: 5px;
+      padding: 2px 5px;
+      background-color: #eee;
+    `;
+    let keywords = news.keywords ? news.keywords : [];
+    const keywordList = keywords.map(keyword => (
+      <Bullet key={keyword.rank}>{" " + keyword.value}</Bullet>
+    ));
+    return keywordList;
   }
   render() {
     const Title = styled.h1`
@@ -42,6 +56,7 @@ class NewsDetails extends Component {
       margin: 30px 0 10px 0;
       text-align: center;
     `;
+
     const PublishInfo = styled.p`
       float: right;
       margin: 10px 0 0 0;
@@ -66,6 +81,12 @@ class NewsDetails extends Component {
       margin: 20px auto;
       text-align: center;
     `;
+    const KeywordWrapper = styled.div`
+      float: left;
+      width: 100%;
+    `;
+    const Keywords = styled.div``;
+
     const { news, open } = this.state;
     return (
       <Modal open={open} onClose={this.onCloseModal} little>
@@ -75,8 +96,13 @@ class NewsDetails extends Component {
           <PublishDate>{this.getPublishDate(news)}</PublishDate>
         </PublishInfo>
         <NewsImageWrapper>
-          <NewsImage src={this.getThumbnail(news)} alt={news.document_type} />
+          <NewsImage src={this.getLargerImage(news)} alt={news.document_type} />
         </NewsImageWrapper>
+        {news.keywords.length > 0 && (
+          <KeywordWrapper>
+            <b>Keywords:</b> <Keywords>{this.getKeywords(news)}</Keywords>
+          </KeywordWrapper>
+        )}
       </Modal>
     );
   }
