@@ -21,6 +21,12 @@
 .App-intro {
   font-size: large;
 }
+.loading > div:first-child {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  z-index: 1;
+}
 
 @keyframes App-logo-spin {
   from {

@@ -3,12 +3,15 @@ import News from "./News";
 import config from "../config/beta/config.beta.json";
 import styled from "styled-components";
 import logo from "../assets/logo.png";
+import { ClipLoader } from "react-spinners";
+
 class NewsList extends Component {
   constructor(props) {
     super(props);
     this.state = {
       newsList: [],
-      pageCount: 0
+      pageCount: 0,
+      loading: true
     };
     this.getNews = this.getNews.bind(this);
     this.getNewList = this.getNewList.bind(this);
@@ -34,15 +37,18 @@ class NewsList extends Component {
           if (oldNews) {
             oldNews = oldNews.concat(response.response.docs);
           }
-          return { newsList: oldNews };
+          return { newsList: oldNews, loading: false };
         })
       );
   }
 
   showMore() {
-    this.setState({ pageCount: ++this.state.pageCount }, function() {
-      this.getNews();
-    });
+    this.setState(
+      { pageCount: ++this.state.pageCount, loading: true },
+      function() {
+        this.getNews();
+      }
+    );
   }
   getNewList() {
     return this.state.newsList.map(news => <News key={news._id} news={news} />);
@@ -79,7 +85,8 @@ class NewsList extends Component {
     `;
 
     return (
-      <div>
+      <div className="loading">
+        <ClipLoader color={"#123abc"} loading={this.state.loading} />
         <LogoBranding>
           <a href="https://www.nytimes.com/">
             <Logo src={logo} alt="The New York Times" />
