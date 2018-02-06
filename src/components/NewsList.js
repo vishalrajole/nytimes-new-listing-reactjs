@@ -43,12 +43,9 @@ class NewsList extends Component {
   }
 
   showMore() {
-    this.setState(
-      { pageCount: ++this.state.pageCount, loading: true },
-      function() {
-        this.getNews();
-      }
-    );
+    this.setState({ pageCount: ++this.state.pageCount }, function() {
+      this.getNews();
+    });
   }
   getNewList() {
     return this.state.newsList.map(news => <News key={news._id} news={news} />);
